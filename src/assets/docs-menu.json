@@ -1,0 +1,33 @@
+{
+    "data": [
+        {
+            "label": "Documents",
+            "data": "Documents Folder",
+            "partialSelected": true,
+            "urlSegment": "documents",
+            "selectable": false,
+            "children": [
+                {
+                    "label": "Work",
+                    "data": "Work Folder",
+                    "urlSegment": "work",
+                    "selectable": false,
+                    "children": [
+                        {
+                            "label": "Testing",
+                            "icon": "pi pi-file",
+                            "urlSegment": "testing",
+                            "fileNode": true,
+                            "filePath": "assets/testing.md"
+                        },
+                        {
+                            "label": "Resume.doc",
+                            "icon": "pi pi-file",
+                            "data": "Resume Document"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

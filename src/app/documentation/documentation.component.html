@@ -1,0 +1,15 @@
+<div class="grid">
+    <div class="col-5 xl:col-3">
+        <ng-container *ngIf="treeNodes$ | async as nodes">
+            <p-tree 
+                [value]="nodes" 
+                selectionMode="single" 
+                [(selection)]="selectedNode"
+                (onNodeSelect)="nodeSelect($event)">
+            </p-tree>
+        </ng-container>
+    </div>
+    <div class="col-7 xl:col-9">
+        <router-outlet></router-outlet>
+    </div>
+</div>
