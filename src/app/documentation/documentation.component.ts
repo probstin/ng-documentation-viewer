@@ -5,20 +5,14 @@ import { TreeNode } from 'primeng/api';
 import { filter, map, Observable, tap } from 'rxjs';
 import { DocsBusService, EventData, EventType } from './services/docs-bus.service';
 
-export interface MenuTreeNode extends TreeNode {
-  urlSegment: string;
-  fileNode?: boolean;
-  filePath?: string;
-}
-
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html'
 })
 export class DocumentationComponent implements OnInit {
 
-  selectedNode!: MenuTreeNode;
-  treeNodes$!: Observable<MenuTreeNode[]>;
+  selectedNode!: TreeNode;
+  treeNodes$!: Observable<TreeNode[]>;
 
   constructor(
     private http: HttpClient,
@@ -29,7 +23,7 @@ export class DocumentationComponent implements OnInit {
 
   ngOnInit(): void {
     this.treeNodes$ = this.http
-      .get<MenuTreeNode>('assets/docs-menu.json')
+      .get<TreeNode>('assets/docs-menu.json')
       .pipe(
         map(treeNode => treeNode.data),
         tap(treeNodeData => this.selectedNode = findNode(this._getActiveSegment(this.router, this.router.url), treeNodeData)),
@@ -39,8 +33,8 @@ export class DocumentationComponent implements OnInit {
   nodeSelect(event: any): void {
     const node = event.node;
     // if it's a leaf node, meaning it's got a filePath
-    if (node.fileNode && node.filePath) {
-      const routerLink = `${node.parent.parent.urlSegment}/${node.parent.urlSegment}/${node.urlSegment}`;
+    if (node.leaf && node.data) {
+      const routerLink = `${node.parent.parent.key}/${node.parent.key}/${node.key}`;
       this.router.navigate([routerLink], { relativeTo: this.route });
       this.docBusService.emit(new EventData(EventType.DOC_SELECTED, node));
     }
@@ -61,10 +55,10 @@ export class DocumentationComponent implements OnInit {
 
 }
 
-function findNode(urlSegment: string, nodes: MenuTreeNode[] | TreeNode[]) {
+function findNode(urlSegment: string, nodes: TreeNode[]) {
   return nodes.reduce((a, item) => {
     if (a) return a;
-    if (item.urlSegment === urlSegment) return item;
+    if (item.key === urlSegment) return item;
     if (item.children) return findNode(urlSegment, item.children);
   }, null);
 }

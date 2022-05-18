@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { MenuTreeNode } from '../../documentation.component';
 import { DocsBusService, EventType } from '../../services/docs-bus.service';
 
 const defaultFilePath = 'assets/welcome.md';
@@ -21,8 +21,8 @@ export class DocViewerComponent implements OnInit {
   constructor(private docBusService: DocsBusService) { }
 
   ngOnInit(): void {
-    this.docBusSub = this.docBusService.on(EventType.DOC_SELECTED, (node: MenuTreeNode) => {
-      this.filePath = node.filePath || defaultFilePath;
+    this.docBusSub = this.docBusService.on(EventType.DOC_SELECTED, (node: TreeNode) => {
+      this.filePath = node.data || defaultFilePath;
     });
   }
 
